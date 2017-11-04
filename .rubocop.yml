@@ -1,0 +1,58 @@
+AllCops:
+  TargetRubyVersion: 2.4
+  DisplayCopNames: true
+
+Layout/ExtraSpacing:
+  Enabled: true
+  AllowForAlignment: true
+  ForceEqualSignAlignment: false
+
+Layout/SpaceAroundOperators:
+  Enabled: false
+  AllowForAlignment: true
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented_relative_to_receiver
+  IndentationWidth: 2
+
+Style/HashSyntax:
+  Enabled: false
+
+Style/GuardClause:
+  Enabled: false
+
+Style/WordArray:
+  EnforcedStyle: brackets
+
+Style/SymbolArray:
+  EnforcedStyle: brackets
+
+Style/TrailingCommaInLiteral:
+  EnforcedStyleForMultiline: consistent_comma
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Metrics/LineLength:
+  Enabled: true
+  Max: 100
+  IgnoredPatterns:
+   - '^\s*#.*$'
+
+Metrics/ClassLength:
+  Enabled: false
+
+Metrics/ModuleLength:
+  Enabled: false
+
+Metrics/BlockLength:
+  Enabled: false
+
+Metrics/MethodLength:
+  Enabled: false
+
+Metrics/ParameterLists:
+  CountKeywordArgs: false
+
+Metrics/AbcSize:
+  Enabled: false
