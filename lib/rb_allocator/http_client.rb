@@ -42,6 +42,12 @@ module RbAllocator
       parse(clazz, response)
     end
 
+    def put(path, clazz = nil, body: nil, **params)
+      log.debug("[PUT]#{path}: #{body} ")
+      response = http.put(with_params(path, params), body)
+      parse(clazz, response)
+    end
+
     def delete(path, **params)
       log.debug("[DELETE] #{path}")
       http.delete(with_params(path, params))
@@ -56,6 +62,8 @@ module RbAllocator
     def parse(clazz, response)
       case response
       when Net::HTTPUnprocessableEntity, Net::HTTPSuccess then
+        return if clazz == nil
+
         unless clazz.respond_to? :from_xml
           raise TypeError, "Type #{clazz} does not support XML marshaling"
         end

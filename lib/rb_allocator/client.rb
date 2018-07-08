@@ -29,7 +29,8 @@ module RbAllocator
     # Allocates new database
     # @param [String] label label expression used to specify the database
     # @param [String] requestee who is requesting the allocation?
-    def allocate(label, requestee:, expiration: 0, erase:)
+    # @param [Int] expiration number of minutes before the reservation expires
+    def allocate(label, requestee:, expiration:, erase: true)
       http_client.post(
         RbAllocator::ALLOCATION_ENDPOINT, RbAllocator::Entities::Allocation,
         requestee:  requestee,
@@ -37,6 +38,18 @@ module RbAllocator
         erase:      erase,
         label:      label
       )
+    end
+
+    # @api public
+    #
+    # Change the expiration period of allocation
+    # @param [RbAllocator::Entities::Allocation] allocation allocation object
+    # @param [String] uuid Allocation identifier. This parameter takes precedence over allocation
+    # @param [Int] expiration number of minutes before the reservation expires
+    def reallocate(allocation: nil, uuid: nil, expiration:)
+      uuid = extract_uuid(allocation, uuid)
+      http_client.put(ALLOCATION_ENDPOINT + "/#{uuid}", nil, expiresIn: expiration)
+
     end
 
     # @api public
@@ -49,6 +62,9 @@ module RbAllocator
       http_client.get(ALLOCATION_ENDPOINT + "/#{uuid}", RbAllocator::Entities::Allocation)
     end
 
+    # @api public
+    #
+    # Get collection of all allocations
     def allocations
       http_client.get(ALLOCATION_ENDPOINT, RbAllocator::Entities::Collection)
     end
