@@ -5,6 +5,8 @@ require_relative 'entities/allocation'
 require_relative 'entities/collection'
 require_relative 'logging/logging_support'
 
+require 'nokogiri/xml/document'
+
 # delete me (I hate rubocop)
 module RbAllocator
   include RbAllocator::Logging::LoggingSupport
@@ -66,6 +68,16 @@ module RbAllocator
     def extract_uuid(allocation, uuid)
       raise ArgumentError, 'Allocation identifier missing' if allocation.nil? && uuid.nil?
       uuid || allocation.uuid
+    end
+
+    def store(path, allocation:)
+      doc = Nokogiri::XML::Document.new
+      doc.root = allocation.to_xml
+      doc.save(path)
+    end
+
+    def load(path)
+      RbAllocator::Entities::Allocation.from_xml(path)
     end
   end
 end
